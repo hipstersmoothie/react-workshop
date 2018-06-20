@@ -27,12 +27,18 @@ module.exports = {
       return chunks;
     },
     {
-      shared: ["react", "react-dom"],
       index: path.join(subjectsDir, "index.js")
     }
   ),
 
+  optimization: {
+    splitChunks: {
+      // chunks: "all",
+    }
+  },
+
   output: {
+    path: path.join(__dirname, "public"),
     filename: "[name].js",
     chunkFilename: "[id].chunk.js",
     publicPath: "/"
@@ -58,24 +64,19 @@ module.exports = {
     ]
   },
 
-  // plugins: [new webpack.optimize.CommonsChunkPlugin({ name: "shared" })]
-
   devServer: {
     open: true,
     quiet: false
-    // noInfo: false,
-    // historyApiFallback: {
-    //   rewrites: []
-    // },
-    // stats: {
-    //   // Config for minimal console.log mess.
-    //   assets: true,
-    //   colors: true,
-    //   version: true,
-    //   hash: true,
-    //   timings: true,
-    //   chunks: false,
-    //   chunkModules: false
-    // }
+  },
+
+  stats: {
+    // Config for minimal console.log mess.
+    assets: true,
+    colors: true,
+    version: true,
+    hash: true,
+    timings: true,
+    chunks: false,
+    chunkModules: false
   }
 };
