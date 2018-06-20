@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const subjectsDir = path.join(__dirname, "subjects");
 const subjectDirs = fs
@@ -8,11 +9,8 @@ const subjectDirs = fs
   .map(file => path.join(subjectsDir, file))
   .filter(file => fs.lstatSync(file).isDirectory());
 
-module.exports = {
-  mode: "development",
-  devtool: "source-map",
-
-  entry: subjectDirs.reduce(
+console.log(
+  [subjectDirs[0]].reduce(
     (chunks, dir) => {
       const base = path.basename(dir);
 
@@ -27,10 +25,41 @@ module.exports = {
       return chunks;
     },
     {
-      shared: ["react", "react-dom"],
       index: path.join(subjectsDir, "index.js")
     }
-  ),
+  )
+);
+
+module.exports = {
+  mode: "development",
+  devtool: "source-map",
+
+  // entry: [].reduce(
+  //   (chunks, dir) => {
+  //     const base = path.basename(dir);
+
+  //     ["lecture", "exercise", "solution"].forEach(name => {
+  //       const file = path.join(dir, `${name}.js`);
+
+  //       if (fs.existsSync(file)) {
+  //         chunks[`${base}-${name}`] = file;
+  //       }
+  //     });
+
+  //     return chunks;
+  //   },
+  entry: {
+    "00-Hello-World-lecture":
+      "/Users/alisowski/Documents/react-workshop/subjects/00-Hello-World/lecture.js",
+    main: path.join(subjectsDir, "index.js")
+  },
+  // ),
+
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
+  },
 
   output: {
     path: path.join(__dirname, "public"),
@@ -63,6 +92,20 @@ module.exports = {
     open: true,
     quiet: false
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      chunks: [
+        "vendors~00-Hello-World-lecture~main",
+        "00-Hello-World-lecture"
+      ],
+      template: "public/00-Hello-World/lecture.html"
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ["main"],
+      template: "public/index.html"
+    })
+  ],
 
   stats: {
     // Config for minimal console.log mess.

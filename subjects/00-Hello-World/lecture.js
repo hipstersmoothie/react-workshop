@@ -1,6 +1,8 @@
 import $ from "jquery";
 import { search } from "./utils/searchWikipedia";
 
+console.log("here");
+
 const html = `
 <div>
   <h1>Wikipedia</h1>
