@@ -27,6 +27,7 @@ module.exports = {
       return chunks;
     },
     {
+      shared: ["react", "react-dom"],
       index: path.join(subjectsDir, "index.js")
     }
   ),
