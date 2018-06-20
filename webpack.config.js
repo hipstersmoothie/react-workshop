@@ -31,12 +31,6 @@ module.exports = {
     }
   ),
 
-  optimization: {
-    splitChunks: {
-      // chunks: "all",
-    }
-  },
-
   output: {
     path: path.join(__dirname, "public"),
     filename: "[name].js",
